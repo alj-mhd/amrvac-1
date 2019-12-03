@@ -1,1 +1,1 @@
-FOBJECTS += mod_mhd_phys.t mod_mhd_roe.t mod_mhd_hllc.t mod_mhd_ppm.t mod_mhd.t mod_trace_Bfield.t mod_thermal_emission.t
+FOBJECTS += mod_hall_phys.t mod_hall_roe.t mod_hall_hllc.t mod_hall_ppm.t mod_hall.t mod_trace_Bfield.t mod_thermal_emission.t
