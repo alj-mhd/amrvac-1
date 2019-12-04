@@ -1,8 +1,8 @@
-module mod_mhd
-  use mod_mhd_phys
-  use mod_mhd_hllc
-  use mod_mhd_roe
-  use mod_mhd_ppm
+module mod_hall
+  use mod_hall_phys
+  use mod_hall_hllc
+  use mod_hall_roe
+  use mod_hall_ppm
 
   use mod_amrvac
 
@@ -11,11 +11,11 @@ module mod_mhd
 
 contains
 
-  subroutine mhd_activate()
-    call mhd_phys_init()
-    call mhd_hllc_init()
-    call mhd_roe_init()
-    call mhd_ppm_init()
-  end subroutine mhd_activate
+  subroutine hall_activate()
+    call hall_phys_init()
+    call hall_hllc_init()
+    call hall_roe_init()
+    call hall_ppm_init()
+  end subroutine hall_activate
 
-end module mod_mhd
+end module mod_hall

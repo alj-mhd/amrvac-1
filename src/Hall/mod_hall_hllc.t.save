@@ -4,18 +4,18 @@ module mod_hall_hllc
   implicit none
   private
 
-  public :: hall_hllc_init
+  public :: mhd_hllc_init
 
 contains
 
-  subroutine hall_hllc_init()
+  subroutine mhd_hllc_init()
     use mod_physics_hllc
 
     phys_diffuse_hllcd => mhd_diffuse_hllcd
     phys_get_lCD => mhd_get_lCD
     phys_get_wCD => mhd_get_wCD
 
-  end subroutine hall_hllc_init
+  end subroutine mhd_hllc_init
 
   subroutine mhd_diffuse_hllcd(ixI^L,ixO^L,idim,wLC,wRC,fLC,fRC,patchf)
   ! when method is hllcd or hllcd1 then: 
@@ -240,4 +240,4 @@ contains
 
   end subroutine mhd_get_wCD
 
-end module mod_hall_hllc
+end module mod_mhd_hllc

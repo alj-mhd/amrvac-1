@@ -1,5 +1,5 @@
 !> Magneto-hydrodynamics module
-module mod_mhd_phys
+module mod_hall_phys
   use mod_global_parameters, only: std_len
   implicit none
   private
@@ -151,7 +151,7 @@ module mod_mhd_phys
 
 
   ! Public methods
-  public :: mhd_phys_init
+  public :: hall_phys_init
   public :: mhd_kin_en
   public :: mhd_get_pthermal
   public :: mhd_get_v
@@ -225,7 +225,7 @@ contains
 
   end subroutine mhd_angmomfix
 
-  subroutine mhd_phys_init()
+  subroutine hall_phys_init()
     use mod_global_parameters
     use mod_thermal_conduction
     use mod_radiative_cooling
@@ -242,7 +242,7 @@ contains
 
     call mhd_read_params(par_files)
 
-    physics_type = "mhd"
+    physics_type = "Hall"
     phys_energy=mhd_energy
     ! set default gamma for polytropic/isothermal process
     if(.not.mhd_energy) mhd_gamma=1.d0
@@ -451,7 +451,7 @@ contains
        end if
     end if
 
-  end subroutine mhd_phys_init
+  end subroutine hall_phys_init
 
   subroutine mhd_check_params
     use mod_global_parameters
@@ -3414,4 +3414,4 @@ contains
 
   end subroutine b_from_vector_potential
 
-end module mod_mhd_phys
+end module mod_hall_phys

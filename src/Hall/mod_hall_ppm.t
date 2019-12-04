@@ -1,19 +1,19 @@
-module mod_mhd_ppm
-  use mod_mhd_phys
+module mod_hall_ppm
+  use mod_hall_phys
 
   implicit none
   private
 
-  public :: mhd_ppm_init
+  public :: hall_ppm_init
 
 contains
 
-  subroutine mhd_ppm_init()
+  subroutine hall_ppm_init()
     use mod_physics_ppm
 
     phys_ppm_flatcd => mhd_ppm_flatcd
     phys_ppm_flatsh => mhd_ppm_flatsh
-  end subroutine mhd_ppm_init
+  end subroutine hall_ppm_init
 
   subroutine mhd_ppm_flatcd(ixI^L,ixO^L,ixL^L,ixR^L,w,d2w,drho,dp)
     use mod_global_parameters
@@ -68,4 +68,4 @@ contains
 
   end subroutine mhd_ppm_flatsh
 
-end module mod_mhd_ppm
+end module mod_hall_ppm

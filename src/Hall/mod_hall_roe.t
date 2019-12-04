@@ -1,6 +1,6 @@
 !> Subroutines for Roe-type Riemann solver for HD
-module mod_mhd_roe
-  use mod_mhd_phys
+module mod_hall_roe
+  use mod_hall_phys
   use mod_physics_roe
 
   implicit none
@@ -9,11 +9,11 @@ module mod_mhd_roe
   integer, parameter :: fastRW_ = 3,fastLW_=4,slowRW_=5,slowLW_=6 ! Characteristic
   integer, parameter :: entroW_ = 8,diverW_=7,alfvRW_=1,alfvLW_=2 ! waves
 
-  public :: mhd_roe_init
+  public :: hall_roe_init
 
 contains
 
-  subroutine mhd_roe_init()
+  subroutine hall_roe_init()
     use mod_global_parameters, only: entropycoef, nw
     integer :: il
 
@@ -35,7 +35,7 @@ contains
        end select
     end do
 
-  end subroutine mhd_roe_init
+  end subroutine hall_roe_init
 
   ! Eight-wave MHD Riemann solver. See Powell, Notes on the eigensystem, Gombosi
   ! Calculate the wroe average of primitive variables in wL and wR, assignment:
@@ -502,4 +502,4 @@ contains
 
   end subroutine rtimes2
 
-end module mod_mhd_roe
+end module mod_hall_roe
