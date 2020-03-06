@@ -543,49 +543,53 @@ sub printline{
 # Break long lines into continuation lines and/or reduce indentation
 sub format90 {
    local($line)=@_;
-
+   local($my_maxlen)=$maxlen;
    local($bestlen,$goodlen,$len,$maxindent,$indent,$indentnow,$c,$answer);
 
    # If line is not too long return
-   return($line) if length($line)<=$maxlen;
+   return($line) if length($line)<=$my_maxlen;
 
-   if ($line =~ /^ *!\$OMP/ || $line =~ /^ *print *\*.*& *$/ ||
-        $line =~ /\/\/ *& *$/ || $line =~ /error stop/) {
-       # Don't break lines with OpenMP, print, //&, error stop
+   if ($line =~ /^ *!\$OMP/
+       || $line =~ /^ *\bprint\b$/
+       || $line =~ /\/\/ *& *$/
+       || $line =~ /\bstop\b/
+       || $line =~ /\berror stop\b/) {
+       # Don't break lines with OpenMP, print, //&, stop, error stop
        return ($line);
    }
 
-   # Don't break lines with print statements
-   return($line) if ($line =~ /^ *(print)/);
-
    # Determine line indentation. If too much, reduce it to maximum.
-   $maxindent=int(0.6*$maxlen);
+   $maxindent=int(0.4*$my_maxlen);
    $line=~s/^( {0,$maxindent}) */$1/; $indent=$1;
 
-   # We are happy if the length of the line is between $goodlen and $maxlen
-   $goodlen=$maxlen / 2;
+   # We are happy if the length of the line is between $goodlen and $my_maxlen
+   $goodlen=$my_maxlen / 2;
 
    # Start breaking line
-   while(length($line)>$maxlen){
+   while(length($line)>$my_maxlen){
        # Remove & followed by newlines
        $line =~ s/& *\n *//g;
 
        # Check for semicolon
-       if(($len=rindex($line,';',$maxlen-1))>=0){
+       if(($len=rindex($line,';',$my_maxlen-1))>=0){
           $answer.=substr($line,0,$len)."\n";
           $line=substr($line,$len+1); $line=~s/^ */$indent/;
           next;
        }
-       # Find best breakpoint after indentation but before $maxlen-2
+       # Find best breakpoint after indentation but before $my_maxlen-2
        $line=~/^ */;
        $bestlen=$indentnow=length($&);
 
        foreach $c (',', ' ', '=>', '/=', '>=', '<=', '==',
-                   '+', '-', ' / ', '**', ' * ', '.or.',
-                   '.and.', ' > ', ' < ', '(', ')') {
+                   '+', ' / ', ' * ', '.or.',
+                   '.and.', ' > ', ' < ') {
+           # Jannis: we should maybe use regular expressions in the future. I
+           # have only included '+' here, since otherwise we might split '1d-3'
+           # at the minus sign.
+
            # Get the start position of the last occurrence of $c beginning at or
-           # before $maxlen
-           $len = rindex($line, $c, $maxlen);
+           # before $my_maxlen
+           $len = rindex($line, $c, $my_maxlen);
 
            # If the line is long enough with the current break, exit
            if ($len > $bestlen) {
@@ -608,8 +612,11 @@ sub format90 {
                $answer.=substr($line,0,$bestlen)."&\n";
                $line="$indent$sss".substr($line,$bestlen);
            }
+       } elsif ($my_maxlen == $maxlen) {
+          # Increase maxlen
+          $my_maxlen=130;
        } else {
-          # No break was found. Remove indentation if there is any or die.
+          # No break was found. Remove indentation if there is any
           $line=~s/^ +// || die "Couldn't break line:".&unquote($line)
        }
    }
